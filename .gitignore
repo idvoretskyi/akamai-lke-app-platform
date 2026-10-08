@@ -1,0 +1,47 @@
+# OpenTofu / Terraform
+**/.terraform/*
+**/.tofu/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+.tofurc
+tofu.rc
+
+# .terraform.lock.hcl files are tracked for consistent provider versions
+
+# Real configuration (may hold secrets); only the .example is tracked
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Kubeconfigs, including the scratch file written by modules/hami
+kubeconfig*.yaml
+*.kubeconfig
+.kubeconfig-*
+.kube/
+
+# Editors, OS, Python bytecode, local env
+.idea/
+.vscode/
+*.swp
+.DS_Store
+__pycache__/
+*.py[cod]
+.env
+.env.*
+
+# Local AI-assistant state
+.claude/
+.opencode/
+
+# Local clones of the APL values repo (scripts/apl-values-clone.sh)
+.values/

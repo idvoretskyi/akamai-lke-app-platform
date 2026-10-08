@@ -1,0 +1,18 @@
+# CODEOWNERS file for akamai-lke-app-platform
+# This file defines individuals or teams that are responsible for code in this repository.
+# More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repo
+* @idvoretskyi
+
+# Terraform/OpenTofu infrastructure code
+/tofu/ @idvoretskyi
+
+# Documentation
+*.md @idvoretskyi
+
+# GitHub workflows and settings
+/.github/ @idvoretskyi
+
+# Scripts
+*.sh @idvoretskyi

@@ -1,0 +1,89 @@
+# ============================================================================
+# Akamai App Platform for LKE Lab: Configuration
+# ============================================================================
+# Copy this file to tofu.tfvars and adjust as needed.
+#
+# Linode API token: auto-resolved from the default user in
+# ~/.config/linode-cli if present (takes priority), else from the
+# LINODE_TOKEN environment variable:
+#   export LINODE_TOKEN="your-token"
+
+# ============================================================================
+# Cluster
+# ============================================================================
+# List LKE versions (App Platform needs >= 1.33):
+#   linode-cli lke versions-list
+
+# cluster_name_prefix = "my-cluster"  # optional, defaults to system username
+region             = "de-fra-2" # Frankfurt 2, DE
+kubernetes_version = "1.36"
+tags               = ["lke", "apl", "gitops"]
+
+# ============================================================================
+# App Platform
+# ============================================================================
+# apl_enabled is WRITE-ONCE: changing it later destroys and recreates the
+# cluster. App Platform requires the HA control plane (validated).
+
+apl_enabled      = true
+ha_control_plane = true
+
+# ============================================================================
+# Node Pool
+# ============================================================================
+# App Platform: >= 3 nodes, Dedicated CPU or Premium plans only, >= 4 vCPU /
+# 8 GB per node. g6-dedicated-8 (8 vCPU / 16 GB) is the comfortable size;
+# g6-dedicated-4 (4 vCPU / 8 GB) is the documented minimum.
+# List plans:
+#   linode-cli linodes types --json | jq -r '.[] | select(.class=="dedicated" or .class=="premium") | "\(.id) \(.vcpus) vCPU \(.memory) MB $\(.price.monthly)"'
+
+node_type  = "g6-dedicated-8"
+node_count = 3
+
+# ============================================================================
+# Networking
+# ============================================================================
+# Restricts the Kubernetes API only (Control Plane ACL + firewall 443 rule).
+# The App Platform console stays public behind its NodeBalancer.
+
+allowed_kubectl_ips      = ["0.0.0.0/0"] # lock down, e.g. ["203.0.113.10/32"]
+enable_control_plane_acl = true
+
+# node_cidrs = ["192.168.128.0/17"]  # LKE private range; must contain 192.168.255.0/24 (NodeBalancer)
+# pod_cidrs  = ["10.2.0.0/16"]       # LKE pod CIDR (rarely needs changing)
+
+# ============================================================================
+# Kubeconfig
+# ============================================================================
+
+merge_kubeconfig = true
+
+# ============================================================================
+# BYO Git
+# ============================================================================
+# Only consumed by scripts/create-values-repo.sh (no resource is created).
+
+values_repo_name = "akamai-lke-app-platform-values"
+
+# ============================================================================
+# Cost Management
+# ============================================================================
+# List prices checked 2026-10-09 (linode-cli linodes types / lke types /
+# nodebalancers types; de-fra-2 has no regional price override):
+#   3 x g6-dedicated-8 (8 vCPU / 16 GB)  3 x $144  = $432/month
+#   HA control plane (lke-ha)                       $60/month
+#   NodeBalancer (APL ingress + console)            $10/month
+#   Subtotal                                       ~$502/month
+#   + Block Storage: App Platform creates at least 11 volumes at
+#     $0.10/GB/month; check sizes with `kubectl get pvc -A`.
+# With g6-dedicated-4 nodes the subtotal is ~$286/month.
+#
+# Destroy the cluster to stop paying for compute:
+#   tofu destroy
+# Re-create when needed:
+#   tofu apply
+#
+# WARNING: destroying the cluster also destroys the built-in Git server and
+# the whole values repo history, unless the BYO Git switch to an external
+# repo has been done (README "BYO Git"). Volumes created by App Platform may
+# outlive the cluster; check Cloud Manager > Volumes after `tofu destroy`.

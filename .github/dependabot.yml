@@ -1,0 +1,31 @@
+version: 2
+updates:
+  # Keep Terraform/OpenTofu providers up-to-date for the root module
+  - package-ecosystem: "terraform"
+    directory: "/tofu"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(terraform)"
+    labels:
+      - dependencies
+    groups:
+      terraform-providers:
+        patterns:
+          - "*"
+
+  # Keep GitHub Actions up-to-date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(actions)"
+    labels:
+      - dependencies
+    groups:
+      github-actions:
+        patterns:
+          - "*"
