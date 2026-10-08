@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![OpenTofu](https://img.shields.io/badge/OpenTofu-%3E%3D1.9-844FBA?logo=opentofu&logoColor=white)](https://opentofu.org)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.36-326CE5?logo=kubernetes&logoColor=white)](https://kubernetes.io)
-[![Linode provider](https://img.shields.io/badge/linode%2Flinode-~%3E%203.5-00A95C?logo=akamai&logoColor=white)](https://search.opentofu.org/provider/linode/linode/latest)
+[![Linode provider](https://img.shields.io/badge/linode%2Flinode-~%3E%204.7-00A95C?logo=akamai&logoColor=white)](https://search.opentofu.org/provider/linode/linode/latest)
 [![App Platform](https://img.shields.io/badge/Akamai-App%20Platform%20for%20LKE-0096D6?logo=akamai&logoColor=white)](https://techdocs.akamai.com/app-platform/docs)
 [![GitOps: ArgoCD](https://img.shields.io/badge/GitOps-ArgoCD-EF7B4D?logo=argo&logoColor=white)](examples/gitops-hello/)
 
